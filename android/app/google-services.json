@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "86927919119",
+    "project_id": "shoe-c585b",
+    "storage_bucket": "shoe-c585b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:86927919119:android:d01caf356eaeb44dd83b7a",
+        "android_client_info": {
+          "package_name": "com.iwa.glem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "86927919119-25392rh50t6eg8jak9e1jsgumecc939j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvcqZWnX0TBfyehI6fYT7HOIifcQnTP0I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "86927919119-25392rh50t6eg8jak9e1jsgumecc939j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

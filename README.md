@@ -4,9 +4,9 @@ A new Flutter project.
 
 ## Getting Started
 
-# packages
-# controllers
-# screens
+// packages
+// controllers
+// screens
 
 This project is a starting point for a Flutter application.
 
