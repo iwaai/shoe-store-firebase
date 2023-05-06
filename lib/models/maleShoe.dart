@@ -50,3 +50,23 @@ class maleShoe {
         "title": title,
       };
 }
+
+class Size {
+  final String size;
+  final bool isSelected;
+
+  Size({
+    required this.size,
+    required this.isSelected,
+  });
+
+  factory Size.fromJson(Map<String, dynamic> json) => Size(
+        size: json["size"],
+        isSelected: json["isSelected"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "size": size,
+        "isSelected": isSelected,
+      };
+}

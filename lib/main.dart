@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import './views/splash/splashScreen.dart';
 import './views/sign-in/signInScreen.dart';
 import './views/signup/signUpScreen.dart';
+import './views/add/addScreen.dart';
 //providers
 import 'controllers/providers/pageswitch.dart';
 import 'controllers/providers/dotChanger.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
               routes: {
                 signInScreen.routeName: (context) => const signInScreen(),
                 signUpScreen.routeName: (context) => const signUpScreen(),
+                addScreen.routeName: (context) => const addScreen()
               },
             ),
           );
