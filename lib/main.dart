@@ -15,6 +15,7 @@ import 'controllers/providers/dotChanger.dart';
 import 'controllers/providers/CircleIndicatorProvider.dart';
 import 'controllers/providers/errorProvider.dart';
 import 'controllers/providers/radioCheckProvider.dart';
+import 'models/ShoeProvider.dart';
 
 void main() async {
   await ScreenUtil.ensureScreenSize();
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider(create: (_) => errorProvider()),
               ChangeNotifierProvider(create: (_) => radioCheckProvider()),
               ChangeNotifierProvider(create: (_) => circleIndicatorProvider()),
+              ChangeNotifierProvider(create: (_) => ShoeMaleProvider())
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,

@@ -2,11 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 import '../../../models/constant.dart';
 import '../../../controllers/firestore/firestoreMethods.dart';
 import '../../../models/maleShoe.dart';
 // controllers
-
+//providers
+import '../../../models/ShoeProvider.dart';
 // screens
 
 import './productCard.dart';
@@ -23,21 +25,11 @@ class _mainScreenBodyState extends State<mainScreenBody>
     with TickerProviderStateMixin {
   late final TabController _tabController =
       TabController(length: 3, vsync: this);
-
-  late Future<List<maleShoe>> _male;
-
-  void getMale() {
-    _male = firestoreMethods().getfromdb();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getMale();
-  }
-
   @override
   Widget build(BuildContext context) {
+    print('********************  PAGE CREATED    ************8');
+    final maleshoeListFirebase =
+        Provider.of<ShoeMaleProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.grey[300],
       body: SizedBox(
@@ -108,7 +100,7 @@ class _mainScreenBodyState extends State<mainScreenBody>
                     SizedBox(
                         height: MediaQuery.of(context).size.height * 0.341.h,
                         child: FutureBuilder<List<maleShoe>>(
-                            future: _male,
+                            future: maleshoeListFirebase.shoemale,
                             builder: ((context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
@@ -119,19 +111,23 @@ class _mainScreenBodyState extends State<mainScreenBody>
                                   style: const TextStyle(color: Colors.white),
                                 );
                               } else {
-                                final male = snapshot.data;
-                                return ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: male!.length,
-                                    itemBuilder: (context, index) {
-                                      final shoe = snapshot.data![index];
-                                      return productCard(
-                                          price: shoe.price,
-                                          category: shoe.category,
-                                          id: shoe.id,
-                                          name: shoe.name,
-                                          image: shoe.imageUrl[0]);
-                                    });
+                                //final male = snapshot.data;
+                                final maleV2 = snapshot.data;
+                                return Consumer<ShoeMaleProvider>(
+                                    builder: (context, value, _) {
+                                  return ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: maleV2!.length,
+                                      itemBuilder: (context, index) {
+                                        final shoe = snapshot.data![index];
+                                        return productCard(
+                                            price: shoe.price,
+                                            category: shoe.category,
+                                            id: shoe.id,
+                                            name: shoe.name,
+                                            image: shoe.imageUrl[1]);
+                                      });
+                                });
                               }
                             }))),
                     Column(
@@ -168,7 +164,7 @@ class _mainScreenBodyState extends State<mainScreenBody>
                     SizedBox(
                         height: MediaQuery.of(context).size.height * 0.13.h,
                         child: FutureBuilder<List<maleShoe>>(
-                            future: _male,
+                            future: maleshoeListFirebase.shoemale,
                             builder: ((context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
@@ -180,18 +176,21 @@ class _mainScreenBodyState extends State<mainScreenBody>
                                 );
                               } else {
                                 final male = snapshot.data;
-                                return ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: male!.length,
-                                    itemBuilder: (context, index) {
-                                      final shoe = snapshot.data![index];
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 6, vertical: 2),
-                                        child: smolProductCard(
-                                            url: shoe.imageUrl[1]),
-                                      );
-                                    });
+                                return Consumer<ShoeMaleProvider>(
+                                    builder: (context, value, _) {
+                                  return ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: male!.length,
+                                      itemBuilder: (context, index) {
+                                        final shoe = snapshot.data![index];
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 6, vertical: 2),
+                                          child: smolProductCard(
+                                              url: shoe.imageUrl[1]),
+                                        );
+                                      });
+                                });
                               }
                             })))
                   ],

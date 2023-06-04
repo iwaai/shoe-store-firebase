@@ -1,7 +1,6 @@
 // packages
 import 'package:flutter/services.dart' as the_bundle;
 import '../../models/maleShoe.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:math';
@@ -11,12 +10,11 @@ import 'dart:math';
 
 class firestoreMethods {
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-
+  var uuid = const Uuid();
   Future<List<maleShoe>> getfromdb() async {
     final data =
         await the_bundle.rootBundle.loadString("lib/models/dummyProducts.json");
     final children = maleShoeFromJson(data);
-
     return children;
   }
 
@@ -51,8 +49,22 @@ class firestoreMethods {
         description: pdescription,
         title: ptitle);
     print(product.toJson());
-    firebaseFirestore.collection("products").doc().set(product.toJson());
+    firebaseFirestore
+        .collection("products")
+        .doc(uuid.v4())
+        .set(product.toJson());
   }
 
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  Future<List<maleShoe>> getfromfirebase() async {
+    List<maleShoe> retriveditems = [];
+    QuerySnapshot<Map<String, dynamic>> snap =
+        await firebaseFirestore.collection("products").get();
+    print(snap.docs.length);
+    for (var i = 0; i < snap.docs.length; i++) {
+      DocumentSnapshot docSnap = snap.docs[i];
+      maleShoe product = maleShoe.fromJson(docSnap.data() as dynamic);
+      retriveditems.add(product);
+    }
+    return retriveditems;
+  }
 }

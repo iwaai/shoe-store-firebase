@@ -19,9 +19,8 @@ class addScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const SafeArea(
       child: Padding(
-        padding: EdgeInsets.only(left: 4.0, right: 4.0, top: 40, bottom: 0),
-        child: Scaffold(
-            resizeToAvoidBottomInset: false, body: SizedBox(child: add_body())),
+        padding: EdgeInsets.only(left: 4.0, right: 4.0, top: 20, bottom: 0),
+        child: Scaffold(resizeToAvoidBottomInset: false, body: add_body()),
       ),
     );
   }
@@ -35,6 +34,8 @@ class add_body extends StatefulWidget {
 }
 
 class _add_bodyState extends State<add_body> {
+  List<String> items = ['Men', 'Woemn', 'Kids'];
+  String? selectedItem = 'Men';
   firestoreMethods firestoremethods = firestoreMethods();
   final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
@@ -44,46 +45,77 @@ class _add_bodyState extends State<add_body> {
   final decriptionController = TextEditingController();
   final imageurlsController = TextEditingController();
   final titleController = TextEditingController();
+  String categorysupplier = 'Men';
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      child: SingleChildScrollView(
-        child: Column(children: [
-          productNameField(),
-          const SizedBox(
-            height: 29,
-          ),
-          catergyfield(),
-          const SizedBox(
-            height: 29,
-          ),
-          imageurlsfield(),
-          const SizedBox(
-            height: 29,
-          ),
-          oldpricefield(),
-          const SizedBox(
-            height: 29,
-          ),
-          pricefield(),
-          const SizedBox(
-            height: 29,
-          ),
-          descrptionField(),
-          const SizedBox(
-            height: 29,
-          ),
-          titleField(),
-          const SizedBox(
-            height: 29,
-          ),
-          productNameField(),
-          const SizedBox(
-            height: 29,
-          ),
-          signInButtton()
-        ]),
+    return SingleChildScrollView(
+      child: Form(
+        child: Padding(
+          padding: EdgeInsets.only(top: 9.h),
+          child: Column(children: [
+            productNameField(),
+            const SizedBox(
+              height: 29,
+            ),
+            categorydropdown(),
+            const SizedBox(
+              height: 29,
+            ),
+            imageurlsfield(),
+            const SizedBox(
+              height: 29,
+            ),
+            oldpricefield(),
+            const SizedBox(
+              height: 29,
+            ),
+            pricefield(),
+            const SizedBox(
+              height: 29,
+            ),
+            descrptionField(),
+            const SizedBox(
+              height: 29,
+            ),
+            titleField(),
+            const SizedBox(
+              height: 29,
+            ),
+            signInButtton()
+          ]),
+        ),
+      ),
+    );
+  }
+
+  Container categorydropdown() {
+    return Container(
+      width: 350.w,
+      padding: const EdgeInsets.only(left: 42, right: 9),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: kTextColor)),
+      child: DropdownButtonFormField<String>(
+        value: selectedItem,
+        isExpanded: true,
+        items: items.map<DropdownMenuItem<String>>((String pvalue) {
+          return DropdownMenuItem<String>(
+            value: pvalue,
+            child: Text(
+              pvalue,
+              style: textTheme.bodyMedium!.copyWith(
+                fontSize: 14.sp,
+              ),
+            ),
+          );
+        }).toList(),
+        onChanged: (String? newValue) {
+          setState(() {
+            selectedItem = newValue!;
+            categorysupplier = newValue;
+          });
+        },
       ),
     );
   }
@@ -91,22 +123,28 @@ class _add_bodyState extends State<add_body> {
   InkWell signInButtton() {
     return InkWell(
         onTap: () async {
+          List<String> stringList = imageurlsController.text.split(',');
+          List<String> newli = List<String>.from(stringList.map((x) => x));
           firestoremethods.uploadProducttodb(
-              pname: 'UltraBoost Shoes',
-              pcategory: 'Men\'s Running',
-              pimageurls: [
-                "https://d326fntlu7tb1e.cloudfront.net/uploads/710d020f-2da8-4e9e-8cff-0c8f24581488-GV6674.webp",
-                "https://d326fntlu7tb1e.cloudfront.net/uploads/710d020f-2da8-4e9e-8cff-0c8f24581488-GV6674.webp"
-              ],
-              poldPrice: "1899.00",
+              pname: nameController.text,
+              pcategory: decriptionController.text,
+              pimageurls: newli,
+              poldPrice: priceController.text,
               psizes: [
                 Size(size: '6.8', isSelected: false),
                 Size(size: '6.9', isSelected: false)
               ],
               pnewprce: "79.00",
-              pdescription:
-                  "Put some pep in your step with the adidas Originals NMD R1.V2. The modern silhouette teams up with retro details to create a truly stand-out look. Your new favorite sneakers are right here. Regular fit shows off a streamlined silhouette Classic lace closure lets you adjust for your ideal fit.Textile upper provides a snug comfortable feel. Responsive Boost midsole includes plugs for throwback style",
-              ptitle: "Adidas Running Shoes With Cooling Ventilations");
+              pdescription: decriptionController.text,
+              ptitle: titleController.text);
+          print(nameController.text);
+          print(categorysupplier);
+
+          print(newli);
+          print(priceController.text);
+          print(newpriceController.text);
+          print(decriptionController.text);
+          print(titleController.text);
         },
         child: Container(
           height: 60.sp,
@@ -133,7 +171,7 @@ class _add_bodyState extends State<add_body> {
       controller: nameController,
       decoration: InputDecoration(
         hintText: 'Enter Product Name',
-        labelText: "Name",
+        labelText: "Product Name",
         floatingLabelBehavior: FloatingLabelBehavior.always,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 42, vertical: 20),
@@ -176,7 +214,7 @@ class _add_bodyState extends State<add_body> {
     return TextFormField(
       controller: imageurlsController,
       decoration: InputDecoration(
-        hintText: 'Enter image urls',
+        hintText: 'Enter image urls COMMA (,) seperated',
         labelText: "image urls",
         floatingLabelBehavior: FloatingLabelBehavior.always,
         contentPadding:
@@ -198,8 +236,8 @@ class _add_bodyState extends State<add_body> {
     return TextFormField(
       controller: priceController,
       decoration: InputDecoration(
-        hintText: 'Enter old price',
-        labelText: "old price",
+        hintText: 'Enter price',
+        labelText: "Original Price",
         floatingLabelBehavior: FloatingLabelBehavior.always,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 42, vertical: 20),
@@ -218,10 +256,10 @@ class _add_bodyState extends State<add_body> {
 
   TextFormField pricefield() {
     return TextFormField(
-      controller: priceController,
+      controller: newpriceController,
       decoration: InputDecoration(
-        hintText: 'Enter new price',
-        labelText: "new price",
+        hintText: 'Enter discounted price',
+        labelText: "New Price",
         floatingLabelBehavior: FloatingLabelBehavior.always,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 42, vertical: 20),
@@ -243,7 +281,7 @@ class _add_bodyState extends State<add_body> {
       controller: decriptionController,
       decoration: InputDecoration(
         hintText: 'Enter description',
-        labelText: " descriptoin",
+        labelText: " Description",
         floatingLabelBehavior: FloatingLabelBehavior.always,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 42, vertical: 20),
