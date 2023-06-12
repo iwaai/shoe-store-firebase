@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import '../../../models/constant.dart';
-import '../../../controllers/firestore/firestoreMethods.dart';
 import '../../../models/maleShoe.dart';
 // controllers
 //providers
@@ -27,7 +26,7 @@ class _mainScreenBodyState extends State<mainScreenBody>
       TabController(length: 3, vsync: this);
   @override
   Widget build(BuildContext context) {
-    print('********************  PAGE CREATED    ************8');
+    //rint('********************  PAGE CREATED    ************8');
     final maleshoeListFirebase =
         Provider.of<ShoeMaleProvider>(context, listen: false);
     return Scaffold(
@@ -161,8 +160,46 @@ class _mainScreenBodyState extends State<mainScreenBody>
                         )
                       ],
                     ),
+                    Expanded(
+                      child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.13.h,
+                          child: FutureBuilder<List<maleShoe>>(
+                              future: maleshoeListFirebase.shoemale,
+                              builder: ((context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                } else if (snapshot.hasError) {
+                                  return Text(
+                                    "Error ${snapshot.error}",
+                                    style: const TextStyle(color: Colors.white),
+                                  );
+                                } else {
+                                  final male = snapshot.data;
+                                  return Consumer<ShoeMaleProvider>(
+                                      builder: (context, value, _) {
+                                    return ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: male!.length,
+                                        itemBuilder: (context, index) {
+                                          final shoe = snapshot.data![index];
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 6, vertical: 2),
+                                            child: smolProductCard(
+                                                url: shoe.imageUrl[1]),
+                                          );
+                                        });
+                                  });
+                                }
+                              }))),
+                    )
+                  ],
+                ),
+                Column(
+                  children: [
                     SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.13.h,
+                        height: MediaQuery.of(context).size.height * 0.341.h,
                         child: FutureBuilder<List<maleShoe>>(
                             future: maleshoeListFirebase.shoemale,
                             builder: ((context, snapshot) {
@@ -175,39 +212,197 @@ class _mainScreenBodyState extends State<mainScreenBody>
                                   style: const TextStyle(color: Colors.white),
                                 );
                               } else {
-                                final male = snapshot.data;
+                                //final male = snapshot.data;
+                                final maleV2 = snapshot.data;
                                 return Consumer<ShoeMaleProvider>(
                                     builder: (context, value, _) {
                                   return ListView.builder(
                                       scrollDirection: Axis.horizontal,
-                                      itemCount: male!.length,
+                                      itemCount: maleV2!.length,
                                       itemBuilder: (context, index) {
                                         final shoe = snapshot.data![index];
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 6, vertical: 2),
-                                          child: smolProductCard(
-                                              url: shoe.imageUrl[1]),
-                                        );
+                                        return productCard(
+                                            price: shoe.price,
+                                            category: shoe.category,
+                                            id: shoe.id,
+                                            name: shoe.name,
+                                            image: shoe.imageUrl[1]);
                                       });
                                 });
                               }
-                            })))
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.360.h,
-                      color: Colors.green,
+                            }))),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(10.w, 1.h, 10.w, 3.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Latest collection',
+                                style: textTheme.bodyLarge!.copyWith(
+                                    fontSize: 22.sp,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Show All',
+                                    style: textTheme.bodyLarge!
+                                        .copyWith(fontSize: 22.sp),
+                                  ),
+                                  Icon(
+                                    Iconsax.arrow_right4,
+                                    size: 22.sp,
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.13.h,
+                          child: FutureBuilder<List<maleShoe>>(
+                              future: maleshoeListFirebase.shoemale,
+                              builder: ((context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                } else if (snapshot.hasError) {
+                                  return Text(
+                                    "Error ${snapshot.error}",
+                                    style: const TextStyle(color: Colors.white),
+                                  );
+                                } else {
+                                  final male = snapshot.data;
+                                  return Consumer<ShoeMaleProvider>(
+                                      builder: (context, value, _) {
+                                    return ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: male!.length,
+                                        itemBuilder: (context, index) {
+                                          final shoe = snapshot.data![index];
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 6, vertical: 2),
+                                            child: smolProductCard(
+                                                url: shoe.imageUrl[1]),
+                                          );
+                                        });
+                                  });
+                                }
+                              }))),
                     )
                   ],
                 ),
                 Column(
                   children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.360.h,
-                      color: Colors.pink,
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.341.h,
+                        child: FutureBuilder<List<maleShoe>>(
+                            future: maleshoeListFirebase.shoemale,
+                            builder: ((context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 3,
+                                );
+                              } else if (snapshot.hasError) {
+                                return Text(
+                                  "Error ${snapshot.error}",
+                                  style: const TextStyle(color: Colors.white),
+                                );
+                              } else {
+                                //final male = snapshot.data;
+                                final maleV2 = snapshot.data;
+                                return Consumer<ShoeMaleProvider>(
+                                    builder: (context, value, _) {
+                                  return ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: maleV2!.length,
+                                      itemBuilder: (context, index) {
+                                        final shoe = snapshot.data![index];
+                                        return productCard(
+                                            price: shoe.price,
+                                            category: shoe.category,
+                                            id: shoe.id,
+                                            name: shoe.name,
+                                            image: shoe.imageUrl[1]);
+                                      });
+                                });
+                              }
+                            }))),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(10.w, 1.h, 10.w, 3.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Latest collection',
+                                style: textTheme.bodyLarge!.copyWith(
+                                    fontSize: 22.sp,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Show All',
+                                    style: textTheme.bodyLarge!
+                                        .copyWith(fontSize: 22.sp),
+                                  ),
+                                  Icon(
+                                    Iconsax.arrow_right4,
+                                    size: 22.sp,
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.13.h,
+                          child: FutureBuilder<List<maleShoe>>(
+                              future: maleshoeListFirebase.shoemale,
+                              builder: ((context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 3,
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Text(
+                                    "Error ${snapshot.error}",
+                                    style: const TextStyle(color: Colors.white),
+                                  );
+                                } else {
+                                  final male = snapshot.data;
+                                  return Consumer<ShoeMaleProvider>(
+                                      builder: (context, value, _) {
+                                    return ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: male!.length,
+                                        itemBuilder: (context, index) {
+                                          final shoe = snapshot.data![index];
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 6, vertical: 2),
+                                            child: smolProductCard(
+                                                url: shoe.imageUrl[1]),
+                                          );
+                                        });
+                                  });
+                                }
+                              }))),
                     )
                   ],
                 )

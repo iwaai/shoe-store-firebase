@@ -27,7 +27,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -37,12 +36,12 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return MultiProvider(
             providers: [
-              ChangeNotifierProvider(create: (_) => pageswitch()),
               ChangeNotifierProvider(create: (_) => dotChanger()),
               ChangeNotifierProvider(create: (_) => errorProvider()),
               ChangeNotifierProvider(create: (_) => radioCheckProvider()),
               ChangeNotifierProvider(create: (_) => circleIndicatorProvider()),
-              ChangeNotifierProvider(create: (_) => ShoeMaleProvider())
+              ChangeNotifierProvider(create: (_) => ShoeMaleProvider()),
+              ChangeNotifierProvider(create: (_) => pageswitch())
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,

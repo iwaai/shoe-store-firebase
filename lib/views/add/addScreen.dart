@@ -125,26 +125,35 @@ class _add_bodyState extends State<add_body> {
         onTap: () async {
           List<String> stringList = imageurlsController.text.split(',');
           List<String> newli = List<String>.from(stringList.map((x) => x));
+          //   firestoremethods.uploadProducttodb(
+          //       pname: nameController.text,
+          //       pcategory: decriptionController.text,
+          //       pimageurls: newli,
+          //       poldPrice: priceController.text,
+          //       psizes: [
+          //         Size(size: '6.8', isSelected: false),
+          //         Size(size: '6.9', isSelected: false)
+          //       ],
+          //       pnewprce: "79.00",
+          //       pdescription: decriptionController.text,
+          //       ptitle: titleController.text);
+          // },
           firestoremethods.uploadProducttodb(
-              pname: nameController.text,
-              pcategory: decriptionController.text,
-              pimageurls: newli,
-              poldPrice: priceController.text,
+              pname: "UltraBoost Shoes",
+              pcategory: "Men's Running",
+              pimageurls: [
+                "https://d326fntlu7tb1e.cloudfront.net/uploads/d60aca33-909b-4df7-9ad7-b75039438e29-GX1398_a1.webp",
+                "https://d326fntlu7tb1e.cloudfront.net/uploads/d60aca33-909b-4df7-9ad7-b75039438e29-GX1398_a1.webp"
+              ],
+              poldPrice: "849.00",
               psizes: [
                 Size(size: '6.8', isSelected: false),
                 Size(size: '6.9', isSelected: false)
               ],
-              pnewprce: "79.00",
-              pdescription: decriptionController.text,
-              ptitle: titleController.text);
-          print(nameController.text);
-          print(categorysupplier);
-
-          print(newli);
-          print(priceController.text);
-          print(newpriceController.text);
-          print(decriptionController.text);
-          print(titleController.text);
+              pnewprce: '390.00',
+              pdescription:
+                  "Put some pep in your step with the adidas Originals NMD R1.V2. The modern silhouette teams up with retro details to create a truly stand-out look. Your new favorite sneakers are right here. Regular fit shows off a streamlined silhouette Classic lace closure lets you adjust for your ideal fit.Textile upper provides a snug comfortable feel. Responsive Boost midsole includes plugs for throwback style",
+              ptitle: "Adidas Running Shoes With Cooling Ventilations");
         },
         child: Container(
           height: 60.sp,
